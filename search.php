@@ -46,7 +46,7 @@
        die(var_dump($e));
      } 
      
-     $sql="SELECT id, name, email, date, company FROM registration_tbl WHERE  name LIKE '%" . $name . "%' OR email LIKE '%" . $name  ."%' OR company LIKE '%" . $name  ."%'";
+     $sql="SELECT id, name, email, date, company FROM registration_tbl WHERE  name LIKE '%"$name"%' OR email LIKE '%"$name"%' OR company LIKE '%"$name"%'";
 	  
 	$result=mysql_query($sql);
 	
@@ -61,7 +61,7 @@
 	          
 	  //-display the result of the array 
 	  echo "<ul>\n"; 
-	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$Rname . " " . $email . " " . $company . " " . $date . " " . "</a></li>\n"; 
+	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   $Rname . $email . $company . $date"</a></li>\n"; 
 	  echo "</ul>"; 
 	  } 
 
