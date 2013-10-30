@@ -28,6 +28,7 @@
 </form>
 <a class="button" href="search.php" target="_blank"><button>Search</button></a>
 <a class="button" href="search1.php" target="_blank"><button>Search 1</button></a>
+<a class="button" href="search1.php" target="_blank"><button>Search 2</button></a>
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
