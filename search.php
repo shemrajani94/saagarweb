@@ -21,7 +21,7 @@
 <h1>Search here!</h1>
     <p>Search the database by inputting the name, email address and company you are looking for. 
     If have a specific query for a certain field then leave it blank.</p>
-<form method="search" action="search.php" enctype="multipart/form-data" >
+<form method="post" action="search.php" enctype="multipart/form-data" >
       Name  <input type="text" name="name" id="name"/></br>
       Email <input type="text" name="email" id="email"/></br>
       Company <input type="text" name="company" id="company"/></br>
