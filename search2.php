@@ -64,7 +64,7 @@ function removeEmpty($var) {
 }
 ?>
 <html>
-   <title>My Simple Search Form</title>
+   <title>Search Form</title>
    <style type="text/css">
       #error {
          color: red;
