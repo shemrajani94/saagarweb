@@ -25,7 +25,12 @@
       <input type="submit" name="submit" value="Search" />
 </form>
 
+
+
+
 <?php
+
+
   $con=mysqli_connect("eu-cdbr-azure-west-b.cloudapp.net","bf2ba5fb6ac7d2","6d1aa0dc","saagarh");
 // Check connection
 if (mysqli_connect_errno())
@@ -33,7 +38,13 @@ if (mysqli_connect_errno())
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
-$result = mysqli_query($con,"SELECT * FROM registration_tbl");
+//if(!empty($_POST)) {
+      // try {
+       //  $key = $_POST['key'];
+	
+	$result = mysqli_query($con,"SELECT id, name, email, date, company FROM registration_tbl WHERE  name LIKE "saagar" or email like "Saagar" or company like "Saagar");
+         // Insert data
+     
 
 echo "<table border='1'>
 <tr>
