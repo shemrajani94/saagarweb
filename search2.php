@@ -56,7 +56,7 @@ if (isset($_GET['search'])) {
          $i = 1;
          while ($row = mysql_fetch_assoc($searchResult)) {
             
-           $results[] = "{$i}:   <strong>Name:</strong> {$row['name']} <strong>Email Address:</strong> {$row['email']}<br /> <strong>Company: </strong> {$row['company']}<br /><br />";
+           $results[] = "{$i}:   <strong>Name:</strong> {$row['name']}<br />   <strong>Email Address:</strong> {$row['email']}<br />   <strong>Company: </strong> {$row['company']}<br /><br />";
             $i++;
          }
       }
