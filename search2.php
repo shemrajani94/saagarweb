@@ -61,22 +61,22 @@ if (isset($_GET['search'])) {
         </tr>";
 
          $results = array(); // the result array
-        while($row = mysqli_fetch_array($result))
-  {
-  echo "<tr>";
-  echo "<td>" . $row['name'] . "</td>";
-  echo "<td>" . $row['email'] . "</td>";
-  echo "<td>" . $row['company'] . "</td>";
-  echo "</tr>";
-  }
-  echo "</table>";
+         $i = 1;
+         while ($row = mysql_fetch_assoc($searchResult)) {
+       //  $results[] = "{$i}: {$row['name']}<br />{$row['email']}<br />{$row['company']}<br /><br />";
+         //  $i++;
+        //while($row = mysqli_fetch_array($result))
+       //  {
+            echo "<tr>";
+            echo "<td>" . $row['name'] . "</td>";
+            echo "<td>" . $row['email'] . "</td>";
+            echo "<td>" . $row['company'] . "</td>";
+            echo "</tr>";
+        }
+            echo "</table>";
         
         
         
-        //$i = 1;
-       //  while ($row = mysql_fetch_assoc($searchResult)) {
-       //     $results[] = "{$i}: {$row['name']}<br />{$row['email']}<br />{$row['company']}<br /><br />";
-        //    $i++;
          }
       }
    }
