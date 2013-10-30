@@ -60,10 +60,11 @@ if (isset($_GET['search'])) {
         <th>Company</th>
         </tr>";
 
-         $results = array(); // the result array
-         $i = 1;
-         while ($row = mysql_fetch_assoc($searchResult)) {
-        $results[] =    {
+       //  $results = array(); // the result array
+      //   $i = 1;
+       //  while ($row = mysql_fetch_assoc($searchResult)) {
+       while($row = mysqli_fetch_array($searchResult))
+         {
             echo "<tr>";
             echo "<td>" . $row['name'] . "</td>";
             echo "<td>" . $row['email'] . "</td>";
@@ -73,7 +74,7 @@ if (isset($_GET['search'])) {
         
         
         
-        //"{$i}: {$row['name']}<br />{$row['email']}<br />{$row['company']}<br /><br />";
+        //   $results[] = "{$i}: {$row['name']}<br />{$row['email']}<br />{$row['company']}<br /><br />";
        //   $i++;
        // while($row = mysqli_fetch_array($result))
         
