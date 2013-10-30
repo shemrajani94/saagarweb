@@ -26,7 +26,8 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-<a class="button" href="search.php" target="_blank"><button>New Discussion</button></a>
+<a class="button" href="search.php" target="_blank"><button>Search</button></a>
+<a class="button" href="search1.php" target="_blank"><button>Search 1</button></a>
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
