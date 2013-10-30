@@ -27,7 +27,6 @@
 
 <?php
     if(isset($_POST['submit'])){ 
-    if(preg_match("^/[A-Za-z]+/", $_POST['name'])){
 	 $name=$_POST['name']; 
 	 
 	 
@@ -65,8 +64,7 @@
 	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$Rname . " " . $email . " " . $company . " " . $date . " " . "</a></li>\n"; 
 	  echo "</ul>"; 
 	  } 
-	
-	} 
+
 	
 	else{ 
 	  
