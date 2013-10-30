@@ -27,7 +27,7 @@ if (isset($_GET['search'])) {
    
    // If there are no errors, lets get the search going.
    if (count($error) < 1) {
-      $searchSQL = "SELECT id, name, email, company FROM registration_tbl WHERE ";
+      $searchSQL = "SELECT id, name, email, company, date FROM registration_tbl WHERE ";
       
       // grab the search types.
       $types = array();
@@ -52,7 +52,7 @@ if (isset($_GET['search'])) {
          $i = 1;
          while ($row = mysql_fetch_assoc($searchResult)) {
             
-           $results[] = "Result {$i}<br /><strong>Name:</strong> {$row['id']} {$row['name']}<br />  <strong>Email Address:</strong> {$row['email']}<br />   <strong>Company: </strong> {$row['company']}<br /><br />";
+           $results[] = "Result {$i}<br /><strong>ID:</strong> {$row['id']}<br /> <strong>Name:</strong>  {$row['name']}<br />  <strong>Email Address:</strong> {$row['email']}<br />   <strong>Company: </strong> {$row['company']}<br /><strong>Date Added: </strong> {$row['date']}<br /><br />";
             $i++;
          }
       }
