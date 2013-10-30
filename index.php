@@ -26,7 +26,7 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-<a class="button" href="indllllex.php" target="_blank">New Discussion</a>
+<a class="button" href="indllllex.php" target="_blank">New Discussion
 
 a.button {
     border: 1px solid #808080;
@@ -35,6 +35,7 @@ a.button {
     padding: 5px;
 }
 
+</a>
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
