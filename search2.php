@@ -74,7 +74,7 @@ function removeEmpty($var) {
       <?php echo (count($error) > 0)?"The following had errors:<br /><span id=\"error\">" . implode("<br />", $error) . "</span><br /><br />":""; ?>
       <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" name="searchForm">
          Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
-         Search In:<br />
+         Search In: (If nothing is selected, I will only search for name)<br />
          Name: <input type="checkbox" name="body" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
          Email: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
          Company: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
