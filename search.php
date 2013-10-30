@@ -20,15 +20,18 @@
 <body>
 <h1>Search here!</h1>
     <p>Fill in your name, email address and company, then click <strong>Submit</strong> to register.</p>
-<form method="post" action="search.php" enctype="multipart/form-data" >
-      Name  <input type="text" name="name" id="name"/></br>
-      Email <input type="text" name="email" id="email"/></br>
-      Company <input type="text" name="company" id="company"/></br>
-      <input type="submit" name="submit" value="Submit" />
+<form method="post" action="search.php" id="searchform" >
+      <input type="text" name="name">
+      <input type="submit" name="submit" value="Search" />
 </form>
-<a class="button" href="search.php" target="_blank"><button>New Discussion</button></a>
+
 <?php
-    // DB connection info
+    if(isset($_POST['submit'])){ 
+    if(preg_match("^/[A-Za-z]+/", $_POST['name'])){
+	 $name=$_POST['name']; 
+	 
+	 
+	// DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
     //using the values you retrieved earlier from the portal.
     $host = "eu-cdbr-azure-west-b.cloudapp.net";
@@ -42,50 +45,36 @@
      }
      catch(Exception $e){
        die(var_dump($e));
-     }
-     // Insert registration info
-     if(!empty($_POST)) {
-       try {
-	 $name = $_POST['name'];
-	 $email = $_POST['email'];
-	 $company = $_POST['company'];
-	 $date = date("Y-m-d");
-	 // Insert data
-        $sql_select = "SELECT * FROM registration_tbl where name = ?";
-        $stmt = $conn->prepare($sql_select);
-        $stmt->bindValue(1, $name);
-      //  $stmt->bindValue(2, $email);
-       // $stmt->bindValue(3, $date);
-        //$stmt->bindValue(4, $company);
-        $stmt->execute();
-       }
-       catch(Exception $e) {
-	 die(var_dump($e));
-       }
-       echo "<h3>Your're registered!</h3>";
-       
-        $stmt = $conn->query($sql_select);
-     $registrants = $stmt->fetchAll(); 
-     if(count($registrants) > 0) {
-       echo "<h2>People who are registered:</h2>";
-       echo "<table>";
-       echo "<tr><th>Name</th>";
-       echo "<th>Email</th>";
-       echo "<th>Date</th>";
-       echo "<th>Company</th></tr>";
-       foreach($registrants as $registrant) {
-	 echo "<tr><td>".$registrant['name']."</td>";
-	 echo "<td>".$registrant['email']."</td>";
-	 echo "<td>".$registrant['date']."</td>";
-	 echo "<td>".$registrant['company']."</td></tr>";
-       }
-       echo "</table>";
-     } else {
-       echo "<h3>No one is currently registered.</h3>";
-     }
-     }
-     // Retrieve data
-     //$sql_select = "SELECT * FROM registration_tbl";
+     } 
+     
+     $sql="SELECT id, name, email, date, company FROM registration_tbl WHERE  name LIKE '%" . $name . "%' OR email LIKE '%" . $name  ."%' OR company LIKE '%" . $name  ."%'";
+	  
+	$result=mysql_query($sql);
+	
+	
+	//-create  while loop and loop through result set 
+	while($row=mysql_fetch_array($result)){ 
+	          $Rname  =$row['name']; 
+	          $email =$row['email']; 
+	          $company =$row['company']; 
+	          $id = $row['id']; 
+	          $date = $row['date'];
+	          
+	  //-display the result of the array 
+	  echo "<ul>\n"; 
+	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$Rname . " " . $email . $company . " " .$date . " " . "</a></li>\n"; 
+	  echo "</ul>"; 
+	  } 
+	
+	} 
+	
+	else{ 
+	  
+	  echo  "<p>Please enter a search query</p>"; 
+	  
+	  } 
+    
+}
     
 ?>
 </body>
