@@ -26,7 +26,7 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-	<input type="search" name="search" value="search" />
+	Search <input type="search" name="search" value="search" />
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
