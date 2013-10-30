@@ -38,20 +38,12 @@ if (mysqli_connect_errno())
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
 
-//if(!empty($_POST)) {
-      // try {
-       //  $key = $_POST['key'];
-	
-	$result = mysqli_query($con,"SELECT id, name, email, date, company FROM registration_tbl WHERE  name LIKE "saagar" or email like "Saagar" or company like "Saagar");
-         // Insert data
-     
+$result = mysqli_query($con,"SELECT * FROM registration_tbl WHERE name LIKE 'Saagar'");
 
 echo "<table border='1'>
 <tr>
 <th>name</th>
 <th>email</th>
-<th>date</th>
-<th>company</th>
 </tr>";
 
 while($row = mysqli_fetch_array($result))
@@ -59,8 +51,6 @@ while($row = mysqli_fetch_array($result))
   echo "<tr>";
   echo "<td>" . $row['name'] . "</td>";
   echo "<td>" . $row['email'] . "</td>";
-  echo "<td>" . $row['date'] . "</td>";
-  echo "<td>" . $row['company'] . "</td>";
   echo "</tr>";
   }
 echo "</table>";
