@@ -1,4 +1,4 @@
- <?php
+<?php
 /*****************************
  *  Simple SQL Search Tutorial by Frost
  *  of Slunked.com
@@ -52,38 +52,11 @@ if (isset($_GET['search'])) {
       if (mysql_num_rows($searchResult) < 1) {
          $error[] = "The search term provided {$searchTerms} yielded no results.";
       }else {
-        
-       echo "<table border='1'>
-        <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Company</th>
-        </tr>";
-
-       //  $results = array(); // the result array
-      //   $i = 1;
-       //  while ($row = mysql_fetch_assoc($searchResult)) {
-       while($row = mysqli_fetch_array($searchResult))
-         {
-            echo "<tr>";
-            echo "<td>" . $row['name'] . "</td>";
-            echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['company'] . "</td>";
-            echo "</tr>";
-        }
-        
-        
-        
-        //   $results[] = "{$i}: {$row['name']}<br />{$row['email']}<br />{$row['company']}<br /><br />";
-       //   $i++;
-       // while($row = mysqli_fetch_array($result))
-        
-         
-    
-            echo "</table>"; 
-     
-        
-        
+         $results = array(); // the result array
+         $i = 1;
+         while ($row = mysql_fetch_assoc($searchResult)) {
+            $results[] = "{$i}:   <strong>Namre</strong> {$row['name']}<br /> <strong>Namre</strong>{$row['company']}<br />{$row['name']}<br /><br />";
+            $i++;
          }
       }
    }
