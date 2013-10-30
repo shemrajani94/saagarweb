@@ -45,7 +45,7 @@
           $id=$row['id'];
   //-display the result of the array
   echo "<ul>\n";
-  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$company . " " . $email .  "</a></li>\n";
+  echo "<li>" . "<a  href=\"search.php>"   .$company . " " . $email .  "</a></li>\n";
   echo "</ul>";
   }
   }
