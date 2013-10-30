@@ -40,7 +40,7 @@
   $result=mysql_query($sql);
   //-create  while loop and loop through result set
   
-  $row=mysql_fetch_array($result)){
+  while ($row=mysql_fetch_array($result)){
           $ID=$row['id'];	
           $name  =$row['name'];
           $email=$row['email'];
