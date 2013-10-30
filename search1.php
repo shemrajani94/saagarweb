@@ -37,7 +37,6 @@ if (isset($_GET['search'])) {
       $types = array();
       $types[] = isset($_GET['name'])?"`name` LIKE '%{$searchTermDB}%'":'';
       $types[] = isset($_GET['email'])?"`email` LIKE '%{$searchTermDB}%'":'';
-      $types[] = isset($_GET['date'])?"`date` LIKE '%{$searchTermDB}%'":'';
       $types[] = isset($_GET['company'])?"`company` LIKE '%{$searchTermDB}%'":'';
       
       $types = array_filter($types, "removeEmpty"); // removes any item that was empty (not checked)
