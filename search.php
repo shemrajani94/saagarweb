@@ -26,38 +26,35 @@
 </form>
 
 <?php
-  if(isset($_POST['submit'])){
-  if(isset($_GET['go'])){
-  if(preg_match("/^[  a-zA-Z]+/", $_POST['key'])){
-  $key=$_POST['key'];
-  //connect  to the database
-  $db=mysql_connect  ("eu-cdbr-azure-west-b.cloudapp.net", "bf2ba5fb6ac7d2",  "6d1aa0dc") or die ('I cannot connect to the database  because: ' . mysql_error());
-  //-select  the database to use
-  $mydb=mysql_select_db("saagarh");
-  //-query  the database table
-  $sql="SELECT  id, name, email, date, company FROM registration_tbl WHERE name LIKE '%" . $name .  "%' OR company LIKE '%" . $name ."%'";
-  //-run  the query against the mysql query function
-  $result=mysql_query($sql);
-  //-create  while loop and loop through result set
-  
-  while ($row=mysql_fetch_array($result)){
-          $ID=$row['id'];	
-          $name  =$row['name'];
-          $email=$row['email'];
-          $date=$row['date'];
-          $company=$row['company'];
-          
-  //-display the result of the array
-  echo "<ul>\n";
-  echo "<li>" . "<a  href=\"search.php?id=$ID\">"   .$name . " " . $email .  "</a></li>\n";
-  echo "</ul>";
-  } 
+  $con=mysqli_connect("eu-cdbr-azure-west-b.cloudapp.net","bf2ba5fb6ac7d2","6d1aa0dc","saagarh");
+// Check connection
+if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
-  else{
-  echo  "<p>Please enter a search query</p>";
+
+$result = mysqli_query($con,"SELECT * FROM registration_tbl");
+
+echo "<table border='1'>
+<tr>
+<th>name</th>
+<th>email</th>
+<th>date</th>
+<th>company</th>
+</tr>";
+
+while($row = mysqli_fetch_array($result))
+  {
+  echo "<tr>";
+  echo "<td>" . $row['name'] . "</td>";
+  echo "<td>" . $row['email'] . "</td>";
+  echo "<td>" . $row['date'] . "</td>";
+  echo "<td>" . $row['company'] . "</td>";
+  echo "</tr>";
   }
-  }
-  }
+echo "</table>";
+
+mysqli_close($con);
 ?>
 
 
