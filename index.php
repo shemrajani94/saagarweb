@@ -27,6 +27,8 @@
       <input type="submit" name="submit" value="Submit" />
 </form>
 
+<h1>Click below to search!</h1>
+     <a class="button" href="search2.php" target="_blank"><button>Search Register</button></a>
 
 <?php
     // DB connection info
@@ -89,7 +91,6 @@
      }
     
 ?>
- <h1>Click below to search!</h1>
-     <a class="button" href="search2.php" target="_blank"><button>Search Register</button></a>
+ 
 </body>
 </html>
