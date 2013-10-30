@@ -26,10 +26,15 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-<form method="search" action="index.php" enctype="multipart/form-data" >
-       Search <input type="search" name="search" value="search" />
-</form>
-	
+<a class="button" href="index.php" target="_blank">New Discussion</a>
+
+a.button {
+    border: 1px solid #808080;
+    background: #a0a0a0;
+    display: inline-block;
+    padding: 5px;
+}
+
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
