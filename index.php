@@ -26,9 +26,8 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-<a class="button" href="search.php" target="_blank"><button>Search</button></a>
-<a class="button" href="search1.php" target="_blank"><button>Search 1</button></a>
-<a class="button" href="search2.php" target="_blank"><button>Search 2</button></a>
+
+
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
@@ -88,6 +87,8 @@
      } else {
        echo "<h3>No one is currently registered.</h3>";
      }
+     <h1>Click below to search!</h1>
+     <a class="button" href="search2.php" target="_blank"><button>Search Register</button></a>
 ?>
 </body>
 </html>
