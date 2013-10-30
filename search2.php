@@ -1,8 +1,4 @@
 <?php
-/*****************************
- *  Simple SQL Search Tutorial by Frost
- *  of Slunked.com
- ******************************/
 
 $dbHost = 'eu-cdbr-azure-west-b.cloudapp.net'; // localhost will be used in most cases
 // set these to your mysql database username and password.
