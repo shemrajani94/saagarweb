@@ -26,7 +26,10 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-	Search <input type="search" name="search" value="search" />
+<form method="search" action="index.php" enctype="multipart/form-data" >
+       Search <input type="search" name="search" value="search" />
+</form>
+	
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
