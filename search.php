@@ -26,54 +26,36 @@
 </form>
 
 <?php
-    if(isset($_POST['submit'])){ 
-	 $name=$_POST['name']; 
-	 
-	 
-	// DB connection info
-    //TODO: Update the values for $host, $user, $pwd, and $db
-    //using the values you retrieved earlier from the portal.
-    $host = "eu-cdbr-azure-west-b.cloudapp.net";
-     $user = "bf2ba5fb6ac7d2";
-     $pwd = "6d1aa0dc";
-     $db = "saagarh";
-     // Connect to database.
-     try {
-       $conn = new PDO( "mysql:host=$host;dbname=$db", $user, $pwd);
-       $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-     }
-     catch(Exception $e){
-       die(var_dump($e));
-     } 
-     
-     $sql="SELECT id, name, email, date, company FROM registration_tbl WHERE  name LIKE '%"$name"%' OR email LIKE '%"$name"%' OR company LIKE '%"$name"%'";
-	  
-	$result=mysql_query($sql);
-	
-	
-	//-create  while loop and loop through result set 
-	while($row=mysql_fetch_array($result)){ 
-	          $Rname  =$row['name']; 
-	          $email =$row['email']; 
-	          $company =$row['company']; 
-	          $id = $row['id']; 
-	          $date = $row['date'];
-	          
-	  //-display the result of the array 
-	  echo "<ul>\n"; 
-	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   $Rname . $email . $company . $date"</a></li>\n"; 
-	  echo "</ul>"; 
-	  } 
-
-	
-	else{ 
-	  
-	  echo  "<p>Please enter a search query</p>"; 
-	  
-	  } 
-    
-}
-    
+  if(isset($_POST['submit'])){
+  if(isset($_GET['go'])){
+  if(preg_match("/^[  a-zA-Z]+/", $_POST['name'])){
+  $name=$_POST['name'];
+  //connect  to the database
+  $db=mysql_connect  ("eu-cdbr-azure-west-b.cloudapp.net", "bf2ba5fb6ac7d2",  "6d1aa0dc") or die ('I cannot connect to the database  because: ' . mysql_error());
+  //-select  the database to use
+  $mydb=mysql_select_db("saagarh");
+  //-query  the database table
+  $sql="SELECT  id, name, email, date, company FROM registration_tbl WHERE name LIKE '%" . $name .  "%' OR company LIKE '%" . $name ."%'";
+  //-run  the query against the mysql query function
+  $result=mysql_query($sql);
+  //-create  while loop and loop through result set
+  while($row=mysql_fetch_array($result)){
+          $company  =$row['Name'];
+          $email=$row['email'];
+          $id=$row['id'];
+  //-display the result of the array
+  echo "<ul>\n";
+  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$company . " " . $email .  "</a></li>\n";
+  echo "</ul>";
+  }
+  }
+  else{
+  echo  "<p>Please enter a search query</p>";
+  }
+  }
+  }
 ?>
+
+
 </body>
 </html>
