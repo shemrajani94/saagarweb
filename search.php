@@ -1,63 +1,89 @@
-<html>
-<head>
-<Title>Search Form</Title>
-<style type="text/css">
-   body { background-color: #fff; border-top: solid 10px #000;
-	  color: #333; font-size: .85em; margin: 20; padding: 20;
-	  font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
- }
-   h1, h2, h3, h4, h5,  { color: #000; margin-bottom: 0; padding-bottom: 0; }
-     h1 { font-size: 2em; }
-     h2 { font-size: 1.75em; }
-     h3 { font-size: 1.2em; }
-     h4 { font-size: 1.2em; }
-     h5 { font-size: 1.2em; }
-     table { margin-top: 0.75em; }
-     th { font-size: 1.2em; text-align: left; border: none; padding-left: 0; }
-     td { padding: 0.25em 2em 0.25em 0em; border: 0 none; }
-</style>
-</head>
-<body>
-<h1>Search here!</h1>
-    <p>Fill in your name, email address and company, then click <strong>Submit</strong> to register.</p>
-<form method="post" action="search.php" id="searchform" >
-      <input type="text" name="key">
-      <input type="submit" name="submit" value="Search" />
-</form>
-
-
-
-
 <?php
+/*****************************
+ *  Simple SQL Search Tutorial by Frost
+ *  of Slunked.com
+ ******************************/
 
+$dbHost = 'eu-cdbr-azure-west-b.cloudapp.net'; // localhost will be used in most cases
+// set these to your mysql database username and password.
+$dbUser = 'bf2ba5fb6ac7d2'; 
+$dbPass = '6d1aa0dc';
+$dbDatabase = 'saagarh'; // the database you put the table into.
+$con = mysql_connect($dbHost, $dbUser, $dbPass) or trigger_error("Failed to connect to MySQL Server. Error: " . mysql_error());
 
-  $con=mysqli_connect("eu-cdbr-azure-west-b.cloudapp.net","bf2ba5fb6ac7d2","6d1aa0dc","saagarh");
-// Check connection
-if (mysqli_connect_errno())
-  {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
-  }
+mysql_select_db($dbDatabase) or trigger_error("Failed to connect to database {$dbDatabase}. Error: " . mysql_error());
 
-$result = mysqli_query($con,"SELECT * FROM registration_tbl WHERE name LIKE 'Saagar'");
+// Set up our error check and result check array
+$error = array();
+$results = array();
 
-echo "<table border='1'>
-<tr>
-<th>name</th>
-<th>email</th>
-</tr>";
+// First check if a form was submitted. 
+// Since this is a search we will use $_GET
+if (isset($_GET['search'])) {
+   $searchTerms = trim($_GET['search']);
+   $searchTerms = strip_tags($searchTerms); // remove any html/javascript.
+   
+   if (strlen($searchTerms) < 3) {
+      $error[] = "Search terms must be longer than 3 characters.";
+   }else {
+      $searchTermDB = mysql_real_escape_string($searchTerms); // prevent sql injection.
+   }
+   
+   // If there are no errors, lets get the search going.
+   if (count($error) < 1) {
+      $searchSQL = "SELECT sid, sbody, stitle, sdescription FROM simple_search WHERE ";
+      
+      // grab the search types.
+      $types = array();
+      $types[] = isset($_GET['body'])?"`sbody` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['title'])?"`stitle` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['desc'])?"`sdescription` LIKE '%{$searchTermDB}%'":'';
+      
+      $types = array_filter($types, "removeEmpty"); // removes any item that was empty (not checked)
+      
+      if (count($types) < 1)
+         $types[] = "`sbody` LIKE '%{$searchTermDB}%'"; // use the body as a default search if none are checked
+      
+          $andOr = isset($_GET['matchall'])?'AND':'OR';
+      $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `stitle`"; // order by title.
 
-while($row = mysqli_fetch_array($result))
-  {
-  echo "<tr>";
-  echo "<td>" . $row['name'] . "</td>";
-  echo "<td>" . $row['email'] . "</td>";
-  echo "</tr>";
-  }
-echo "</table>";
+      $searchResult = mysql_query($searchSQL) or trigger_error("There was an error.<br/>" . mysql_error() . "<br />SQL Was: {$searchSQL}");
+      
+      if (mysql_num_rows($searchResult) < 1) {
+         $error[] = "The search term provided {$searchTerms} yielded no results.";
+      }else {
+         $results = array(); // the result array
+         $i = 1;
+         while ($row = mysql_fetch_assoc($searchResult)) {
+            $results[] = "{$i}: {$row['stitle']}<br />{$row['sdescription']}<br />{$row['sbody']}<br /><br />";
+            $i++;
+         }
+      }
+   }
+}
 
-mysqli_close($con);
+function removeEmpty($var) {
+   return (!empty($var)); 
+}
 ?>
-
-
-</body>
+<html>
+   <title>My Simple Search Form</title>
+   <style type="text/css">
+      #error {
+         color: red;
+      }
+   </style>
+   <body>
+      <?php echo (count($error) > 0)?"The following had errors:<br /><span id=\"error\">" . implode("<br />", $error) . "</span><br /><br />":""; ?>
+      <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" name="searchForm">
+         Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
+         Search In:<br />
+         Body: <input type="checkbox" name="body" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
+         Title: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
+         Description: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
+                 Match All Selected Fields? <input type="checkbox" name="matchall" value="on" <?php echo isset($_GET['matchall'])?"checked":''; ?><br /><br />
+         <input type="submit" name="submit" value="Search!" />
+      </form>
+      <?php echo (count($results) > 0)?"Your search term: {$searchTerms} returned:<br /><br />" . implode("", $results):""; ?>
+   </body>
 </html>
