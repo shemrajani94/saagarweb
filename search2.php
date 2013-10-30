@@ -79,7 +79,7 @@ function removeEmpty($var) {
       <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" name="searchForm">
          Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
          Search In:<br />
-         Body: <input type="checkbox" name="body" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
+         Body: <input type="checkbox" name="name" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
          Title: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
          Description: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
                  Match All Selected Fields? <input type="checkbox" name="matchall" value="on" <?php echo isset($_GET['matchall'])?"checked":''; ?><br /><br />
