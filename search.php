@@ -62,7 +62,7 @@
 	          
 	  //-display the result of the array 
 	  echo "<ul>\n"; 
-	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$Rname . " " . $email . $company . " " .$date . " " . "</a></li>\n"; 
+	  echo "<li>" . "<a  href=\"search.php?id=$id\">"   .$Rname . " " . $email . " " . $company . " " . $date . " " . "</a></li>\n"; 
 	  echo "</ul>"; 
 	  } 
 	
