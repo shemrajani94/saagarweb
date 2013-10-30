@@ -52,7 +52,7 @@ if (isset($_GET['search'])) {
          $i = 1;
          while ($row = mysql_fetch_assoc($searchResult)) {
             
-           $results[] = "Result {$i}<br /><strong>ID:</strong> {$row['id']}<br /> <strong>Name:</strong>  {$row['name']}<br />  <strong>Email Address:</strong> {$row['email']}<br />   <strong>Company: </strong> {$row['company']}<br /><strong>Date Added: </strong> {$row['date']}<br /><br />";
+           $results[] = "---Result {$i}---<br /><strong>ID:</strong> {$row['id']}<br /> <strong>Name:</strong>  {$row['name']}<br />  <strong>Email Address:</strong> {$row['email']}<br />   <strong>Company: </strong> {$row['company']}<br /><strong>Date Added: </strong> {$row['date']}<br /><br />";
             $i++;
          }
       }
