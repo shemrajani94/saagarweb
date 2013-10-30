@@ -26,7 +26,7 @@
       Company <input type="text" name="company" id="company"/></br>
       <input type="submit" name="submit" value="Submit" />
 </form>
-<a class="button" href="indllllex.php" target="_blank"><button>New Discussion</button></a>
+<a class="button" href="search.php" target="_blank"><button>New Discussion</button></a>
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
