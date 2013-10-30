@@ -42,10 +42,10 @@
   while($row=mysql_fetch_array($result)){
           $company  =$row['Name'];
           $email=$row['email'];
-          $id=$row['id'];
+          $ID=$row['id'];
   //-display the result of the array
   echo "<ul>\n";
-  echo "<li>" . "<a  href=\"search.php>"   .$company . " " . $email .  "</a></li>\n";
+  echo "<li>" . "<a  href=\"search.php?id=$ID\">"   .$FirstName . " " . $LastName .  "</a></li>\n";
   echo "</ul>";
   }
   }
