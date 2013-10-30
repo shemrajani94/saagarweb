@@ -18,15 +18,15 @@
 </style>
 </head>
 <body>
-<h1>Register here!</h1>
-    <p>Fill in your name, email address and company, then click <strong>Submit</strong> to register.</p>
-<form method="post" action="indlex.php" enctype="multipart/form-data" >
+<h1>Search here!</h1>
+    <p>Search the database by inputting the name, email address and company you are looking for. 
+    If have a specific query for a certain field then leave it blank.</p>
+<form method="search" action="search.php" enctype="multipart/form-data" >
       Name  <input type="text" name="name" id="name"/></br>
       Email <input type="text" name="email" id="email"/></br>
       Company <input type="text" name="company" id="company"/></br>
-      <input type="submit" name="submit" value="Submit" />
+      <input type="search" name="search" value="search" />
 </form>
-<a class="button" href="indllllex.php" target="_blank"><button>New Discussion</button></a>
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
@@ -51,13 +51,12 @@
 	 $company = $_POST['company'];
 	 $date = date("Y-m-d");
 	 // Insert data
-        $sql_insert = "INSERT INTO registration_tbl (name, email, date, company) 
-                   VALUES (?,?,?,?)";
+        $sql_select = "SELECT * FROM registration_tbl WHERE (name, email, company) 
+                   VALUES (?,?,?)";
         $stmt = $conn->prepare($sql_insert);
         $stmt->bindValue(1, $name);
         $stmt->bindValue(2, $email);
-        $stmt->bindValue(3, $date);
-        $stmt->bindValue(4, $company);
+        $stmt->bindValue(3, $company);
         $stmt->execute();
        }
        catch(Exception $e) {
