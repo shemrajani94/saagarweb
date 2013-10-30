@@ -21,15 +21,15 @@
 <h1>Search here!</h1>
     <p>Fill in your name, email address and company, then click <strong>Submit</strong> to register.</p>
 <form method="post" action="search.php" id="searchform" >
-      <input type="text" name="name">
+      <input type="text" name="key">
       <input type="submit" name="submit" value="Search" />
 </form>
 
 <?php
   if(isset($_POST['submit'])){
   if(isset($_GET['go'])){
-  if(preg_match("/^[  a-zA-Z]+/", $_POST['name'])){
-  $name=$_POST['name'];
+  if(preg_match("/^[  a-zA-Z]+/", $_POST['key'])){
+  $key=$_POST['key'];
   //connect  to the database
   $db=mysql_connect  ("eu-cdbr-azure-west-b.cloudapp.net", "bf2ba5fb6ac7d2",  "6d1aa0dc") or die ('I cannot connect to the database  because: ' . mysql_error());
   //-select  the database to use
@@ -40,37 +40,18 @@
   $result=mysql_query($sql);
   //-create  while loop and loop through result set
   
-  // Retrieve data
-    
-     
-     $registrants = $result->fetchAll(); 
-     if(count($registrants) > 0) {
-       echo "<h2>People who are registered:</h2>";
-       echo "<table>";
-       echo "<tr><th>Name</th>";
-       echo "<th>Email</th>";
-       echo "<th>Date</th>";
-       echo "<th>Company</th></tr>";
-       foreach($registrants as $registrant) {
-	 echo "<tr><td>".$registrant['name']."</td>";
-	 echo "<td>".$registrant['email']."</td>";
-	 echo "<td>".$registrant['date']."</td>";
-	 echo "<td>".$registrant['company']."</td></tr>";
-       }
-       echo "</table>";
-     } else {
-       echo "<h3>No one is currently registered.</h3>";
-     }
-  
- /* while($row=mysql_fetch_array($result)){
-          $company  =$row['Name'];
+  $row=mysql_fetch_array($result)){
+          $ID=$row['id'];	
+          $name  =$row['name'];
           $email=$row['email'];
-          $ID=$row['id'];
+          $date=$row['date'];
+          $company=$row['company'];
+          
   //-display the result of the array
   echo "<ul>\n";
-  echo "<li>" . "<a  href=\"search.php?id=$ID\">"   .$FirstName . " " . $LastName .  "</a></li>\n";
+  echo "<li>" . "<a  href=\"search.php?id=$ID\">"   .$name . " " . $email .  "</a></li>\n";
   echo "</ul>";
-  } */
+  } 
   }
   else{
   echo  "<p>Please enter a search query</p>";
