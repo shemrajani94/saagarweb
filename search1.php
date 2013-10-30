@@ -31,13 +31,13 @@ if (isset($_GET['search'])) {
    
    // If there are no errors, lets get the search going.
    if (count($error) < 1) {
-      $searchSQL = "SELECT id, name, email, date, company FROM registration_tbl WHERE ";
+      $searchSQL = "SELECT id, name, email, company FROM registration_tbl WHERE ";
       
       // grab the search types.
       $types = array();
-      $types[] = isset($_GET['name'])?"`name` LIKE '%{$searchTermDB}%'":'';
-      $types[] = isset($_GET['email'])?"`email` LIKE '%{$searchTermDB}%'":'';
-      $types[] = isset($_GET['company'])?"`company` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['body'])?"`name` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['title'])?"`email` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['desc'])?"`company` LIKE '%{$searchTermDB}%'":'';
       
       $types = array_filter($types, "removeEmpty"); // removes any item that was empty (not checked)
       
@@ -45,7 +45,7 @@ if (isset($_GET['search'])) {
          $types[] = "`name` LIKE '%{$searchTermDB}%'"; // use the body as a default search if none are checked
       
           $andOr = isset($_GET['matchall'])?'AND':'OR';
-      $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `stitle`"; // order by title.
+      $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `email`"; // order by title.
 
       $searchResult = mysql_query($searchSQL) or trigger_error("There was an error.<br/>" . mysql_error() . "<br />SQL Was: {$searchSQL}");
       
@@ -55,7 +55,7 @@ if (isset($_GET['search'])) {
          $results = array(); // the result array
          $i = 1;
          while ($row = mysql_fetch_assoc($searchResult)) {
-            $results[] = "{$i}: {$row['name']}<br />{$row['email']}<br />{$row['company']}<br /><br />";
+            $results[] = "{$i}: {$row['email']}<br />{$row['company']}<br />{$row['name']}<br /><br />";
             $i++;
          }
       }
@@ -78,9 +78,9 @@ function removeEmpty($var) {
       <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" name="searchForm">
          Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
          Search In:<br />
-         Name: <input type="checkbox" name="name" value="on" <?php echo isset($_GET['name'])?"checked":''; ?> /> | 
-         Email: <input type="checkbox" name="email" value="on" <?php echo isset($_GET['email'])?"checked":''; ?> /> | 
-         Company: <input type="checkbox" name="company" value="on" <?php echo isset($_GET['company'])?"checked":''; ?> /><br />
+         Body: <input type="checkbox" name="body" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
+         Title: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
+         Description: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
                  Match All Selected Fields? <input type="checkbox" name="matchall" value="on" <?php echo isset($_GET['matchall'])?"checked":''; ?><br /><br />
          <input type="submit" name="submit" value="Search!" />
       </form>
