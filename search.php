@@ -1,6 +1,6 @@
 <html>
 <head>
-<Title>Search Form</Title>
+<Title>Registration Form</Title>
 <style type="text/css">
    body { background-color: #fff; border-top: solid 10px #000;
 	  color: #333; font-size: .85em; margin: 20; padding: 20;
@@ -18,15 +18,15 @@
 </style>
 </head>
 <body>
-<h1>Search here!</h1>
-    <p>Search the database by inputting the name, email address and company you are looking for. 
-    If have a specific query for a certain field then leave it blank.</p>
-<form method="post" action="search.php" enctype="multipart/form-data" >
+<h1>Register here!</h1>
+    <p>Fill in your name, email address and company, then click <strong>Submit</strong> to register.</p>
+<form method="post" action="indlex.php" enctype="multipart/form-data" >
       Name  <input type="text" name="name" id="name"/></br>
       Email <input type="text" name="email" id="email"/></br>
       Company <input type="text" name="company" id="company"/></br>
-      <input type="search" name="search" value="search" />
+      <input type="submit" name="submit" value="Submit" />
 </form>
+<a class="button" href="search.php" target="_blank"><button>New Discussion</button></a>
 <?php
     // DB connection info
     //TODO: Update the values for $host, $user, $pwd, and $db
@@ -51,12 +51,12 @@
 	 $company = $_POST['company'];
 	 $date = date("Y-m-d");
 	 // Insert data
-        $sql_select = "SELECT * FROM registration_tbl WHERE (name, email, company) 
-                   VALUES (?,?,?)";
-        $stmt = $conn->prepare($sql_insert);
+        $sql_select = "SELECT * FROM registration_tbl where name = ?";
+        $stmt = $conn->prepare($sql_select);
         $stmt->bindValue(1, $name);
-        $stmt->bindValue(2, $email);
-        $stmt->bindValue(3, $company);
+      //  $stmt->bindValue(2, $email);
+       // $stmt->bindValue(3, $date);
+        //$stmt->bindValue(4, $company);
         $stmt->execute();
        }
        catch(Exception $e) {
