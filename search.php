@@ -39,7 +39,30 @@
   //-run  the query against the mysql query function
   $result=mysql_query($sql);
   //-create  while loop and loop through result set
-  while($row=mysql_fetch_array($result)){
+  
+  // Retrieve data
+    
+     
+     $registrants = $result->fetchAll(); 
+     if(count($registrants) > 0) {
+       echo "<h2>People who are registered:</h2>";
+       echo "<table>";
+       echo "<tr><th>Name</th>";
+       echo "<th>Email</th>";
+       echo "<th>Date</th>";
+       echo "<th>Company</th></tr>";
+       foreach($registrants as $registrant) {
+	 echo "<tr><td>".$registrant['name']."</td>";
+	 echo "<td>".$registrant['email']."</td>";
+	 echo "<td>".$registrant['date']."</td>";
+	 echo "<td>".$registrant['company']."</td></tr>";
+       }
+       echo "</table>";
+     } else {
+       echo "<h3>No one is currently registered.</h3>";
+     }
+  
+ /* while($row=mysql_fetch_array($result)){
           $company  =$row['Name'];
           $email=$row['email'];
           $ID=$row['id'];
@@ -47,7 +70,7 @@
   echo "<ul>\n";
   echo "<li>" . "<a  href=\"search.php?id=$ID\">"   .$FirstName . " " . $LastName .  "</a></li>\n";
   echo "</ul>";
-  }
+  } */
   }
   else{
   echo  "<p>Please enter a search query</p>";
