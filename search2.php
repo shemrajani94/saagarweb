@@ -31,14 +31,14 @@ if (isset($_GET['search'])) {
       
       // grab the search types.
       $types = array();
-      $types[] = isset($_GET['body'])?"`name` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['sname'])?"`name` LIKE '%{$searchTermDB}%'":'';
       $types[] = isset($_GET['title'])?"`email` LIKE '%{$searchTermDB}%'":'';
       $types[] = isset($_GET['desc'])?"`company` LIKE '%{$searchTermDB}%'":'';
       
       $types = array_filter($types, "removeEmpty"); // removes any item that was empty (not checked)
       
       if (count($types) < 1)
-         $types[] = "`name` LIKE '%{$searchTermDB}%'"; // use the body as a default search if none are checked
+         $types[] = "`name` LIKE '%{$searchTermDB}%'"; // use the name as a default search if none are checked
       
           $andOr = isset($_GET['matchall'])?'AND':'OR';
       $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `email`"; // order by title.
@@ -75,7 +75,7 @@ function removeEmpty($var) {
       <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" name="searchForm">
          Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
          Search In: (If nothing is selected, I will only search for name)<br />
-         Name: <input type="checkbox" name="body" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
+         Name: <input type="checkbox" name="sname" value="on" <?php echo isset($_GET['sname'])?"checked":''; ?> /> | 
          Email: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
          Company: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
                  Match All Selected Fields? <input type="checkbox" name="matchall" value="on" <?php echo isset($_GET['matchall'])?"checked":''; ?><br /><br />
