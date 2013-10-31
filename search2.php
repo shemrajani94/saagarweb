@@ -32,7 +32,7 @@ if (isset($_GET['search'])) {
       // grab the search types.
       $types = array();
       $types[] = isset($_GET['sname'])?"`name` LIKE '%{$searchTermDB}%'":'';
-      $types[] = isset($_GET['title'])?"`email` LIKE '%{$searchTermDB}%'":'';
+      $types[] = isset($_GET['stitle'])?"`email` LIKE '%{$searchTermDB}%'":'';
       $types[] = isset($_GET['desc'])?"`company` LIKE '%{$searchTermDB}%'":'';
       
       $types = array_filter($types, "removeEmpty"); // removes any item that was empty (not checked)
@@ -41,7 +41,7 @@ if (isset($_GET['search'])) {
          $types[] = "`name` LIKE '%{$searchTermDB}%'"; // use the name as a default search if none are checked
       
           $andOr = isset($_GET['matchall'])?'AND':'OR';
-      $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `email`"; // order by title.
+      $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `email`"; // order by email.
 
       $searchResult = mysql_query($searchSQL) or trigger_error("There was an error.<br/>" . mysql_error() . "<br />SQL Was: {$searchSQL}");
       
@@ -76,7 +76,7 @@ function removeEmpty($var) {
          Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
          Search In: (If nothing is selected, I will only search for name)<br />
          Name: <input type="checkbox" name="sname" value="on" <?php echo isset($_GET['sname'])?"checked":''; ?> /> | 
-         Email: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
+         Email: <input type="checkbox" name="stitle" value="on" <?php echo isset($_GET['stitle'])?"checked":''; ?> /> | 
          Company: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
                  Match All Selected Fields? <input type="checkbox" name="matchall" value="on" <?php echo isset($_GET['matchall'])?"checked":''; ?><br /><br />
          <input type="submit" name="submit" value="Search!" />
