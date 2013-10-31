@@ -13,16 +13,15 @@ mysql_select_db($dbDatabase) or trigger_error("Failed to connect to database {$d
 $error = array();
 $results = array();
 
-// First check if a form was submitted. 
-// Since this is a search we will use $_GET
+
 if (isset($_GET['search'])) {
    $searchTerms = trim($_GET['search']);
-   $searchTerms = strip_tags($searchTerms); // remove any html/javascript.
+   $searchTerms = strip_tags($searchTerms); 
    
    if (strlen($searchTerms) < 3) {
       $error[] = "Search terms must be longer than 3 characters.";
    }else {
-      $searchTermDB = mysql_real_escape_string($searchTerms); // prevent sql injection.
+      $searchTermDB = mysql_real_escape_string($searchTerms); 
    }
    
    // If there are no errors, lets get the search going.
