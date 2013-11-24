@@ -158,10 +158,10 @@ function eachInterval() {
          
     var w=canvas.getWidth();
     var h=canvas.getHeight();
-    if(X<0){X=0;}
-    if(X>w){X=w;}
-    if(Y<0){Y=0;}
-    if(Y>h){Y=h;}
+    if(X<0){X=w;}
+    if(X>w){X=0;}
+    if(Y<0){Y=h;}
+    if(Y>h){Y=0;}
     triangle.set({top: Y, left:X});
     trailDot(X,Y,R);
   }
