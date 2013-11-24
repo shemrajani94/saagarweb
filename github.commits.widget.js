@@ -1,89 +1,163 @@
-<?php
-/*****************************
- *  Simple SQL Search Tutorial by Frost
- *  of Slunked.com
- ******************************/
+/*
 
-$dbHost = 'eu-cdbr-azure-west-b.cloudapp.net'; // localhost will be used in most cases
-// set these to your mysql database username and password.
-$dbUser = 'bf2ba5fb6ac7d2'; 
-$dbPass = '6d1aa0dc';
-$dbDatabase = 'saagarh'; // the database you put the table into.
-$con = mysql_connect($dbHost, $dbUser, $dbPass) or trigger_error("Failed to connect to MySQL Server. Error: " . mysql_error());
+https://github.com/alexanderbeletsky/github-commits-widget
 
-mysql_select_db($dbDatabase) or trigger_error("Failed to connect to database {$dbDatabase}. Error: " . mysql_error());
+# Legal Info (MIT License)
 
-// Set up our error check and result check array
-$error = array();
-$results = array();
+Copyright (c) 2012 Alexander Beletsky
 
-// First check if a form was submitted. 
-// Since this is a search we will use $_GET
-if (isset($_GET['search'])) {
-   $searchTerms = trim($_GET['search']);
-   $searchTerms = strip_tags($searchTerms); // remove any html/javascript.
-   
-   if (strlen($searchTerms) < 3) {
-      $error[] = "Search terms must be longer than 3 characters.";
-   }else {
-      $searchTermDB = mysql_real_escape_string($searchTerms); // prevent sql injection.
-   }
-   
-   // If there are no errors, lets get the search going.
-   if (count($error) < 1) {
-      $searchSQL = "SELECT sid, sbody, stitle, sdescription FROM simple_search WHERE ";
-      
-      // grab the search types.
-      $types = array();
-      $types[] = isset($_GET['body'])?"`sbody` LIKE '%{$searchTermDB}%'":'';
-      $types[] = isset($_GET['title'])?"`stitle` LIKE '%{$searchTermDB}%'":'';
-      $types[] = isset($_GET['desc'])?"`sdescription` LIKE '%{$searchTermDB}%'":'';
-      
-      $types = array_filter($types, "removeEmpty"); // removes any item that was empty (not checked)
-      
-      if (count($types) < 1)
-         $types[] = "`sbody` LIKE '%{$searchTermDB}%'"; // use the body as a default search if none are checked
-      
-          $andOr = isset($_GET['matchall'])?'AND':'OR';
-      $searchSQL .= implode(" {$andOr} ", $types) . " ORDER BY `stitle`"; // order by title.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-      $searchResult = mysql_query($searchSQL) or trigger_error("There was an error.<br/>" . mysql_error() . "<br />SQL Was: {$searchSQL}");
-      
-      if (mysql_num_rows($searchResult) < 1) {
-         $error[] = "The search term provided {$searchTerms} yielded no results.";
-      }else {
-         $results = array(); // the result array
-         $i = 1;
-         while ($row = mysql_fetch_assoc($searchResult)) {
-            $results[] = "{$i}: {$row['stitle']}<br />{$row['sdescription']}<br />{$row['sbody']}<br /><br />";
-            $i++;
-         }
-      }
-   }
-}
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-function removeEmpty($var) {
-   return (!empty($var)); 
-}
-?>
-<html>
-   <title>My Simple Search Form</title>
-   <style type="text/css">
-      #error {
-         color: red;
-      }
-   </style>
-   <body>
-      <?php echo (count($error) > 0)?"The following had errors:<br /><span id=\"error\">" . implode("<br />", $error) . "</span><br /><br />":""; ?>
-      <form method="GET" action="<?php echo $_SERVER['PHP_SELF'];?>" name="searchForm">
-         Search For: <input type="text" name="search" value="<?php echo isset($searchTerms)?htmlspecialchars($searchTerms):''; ?>" /><br />
-         Search In:<br />
-         Body: <input type="checkbox" name="body" value="on" <?php echo isset($_GET['body'])?"checked":''; ?> /> | 
-         Title: <input type="checkbox" name="title" value="on" <?php echo isset($_GET['title'])?"checked":''; ?> /> | 
-         Description: <input type="checkbox" name="desc" value="on" <?php echo isset($_GET['desc'])?"checked":''; ?> /><br />
-                 Match All Selected Fields? <input type="checkbox" name="matchall" value="on" <?php echo isset($_GET['matchall'])?"checked":''; ?><br /><br />
-         <input type="submit" name="submit" value="Search!" />
-      </form>
-      <?php echo (count($results) > 0)?"Your search term: {$searchTerms} returned:<br /><br />" . implode("", $results):""; ?>
-   </body>
-</html>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+
+(function ($) {
+    function widget(element, options, callback) {
+        this.element = element;
+        this.options = options;
+        this.callback = $.isFunction(callback) ? callback : $.noop;
+    }
+
+    widget.prototype = (function() {
+
+        function getCommits(user, repo, branch, callback) {
+            $.ajax({
+                url: "https://api.github.com/repos/" + user + "/" + repo + "/commits?sha=" + branch,
+                dataType: 'jsonp',
+                success: callback
+            });
+        }
+
+        function _widgetRun(widget) {
+            if (!widget.options) {
+                widget.element.append('<span class="error">Options for widget are not set.</span>');
+                return;
+            }
+            var callback = widget.callback;
+            var element = widget.element;
+            var user = widget.options.user;
+            var repo = widget.options.repo;
+            var branch = widget.options.branch;
+            var avatarSize = widget.options.avatarSize || 20;
+            var last = widget.options.last === undefined ? 0 : widget.options.last;
+            var limitMessage = widget.options.limitMessageTo === undefined ? 0 : widget.options.limitMessageTo;
+
+            getCommits(user, repo, branch, function (data) {
+                var commits = data.data;
+                var totalCommits = (last < commits.length ? last : commits.length);
+
+                element.empty();
+
+                var list = $('<ul class="github-commits-list">').appendTo(element);
+                for (var c = 0; c < totalCommits; c++) {
+                    var cur = commits[c];
+                    var li = $("<li>");
+
+                    var e_user = $('<span class="github-user">');
+                    //add avatar & github link if possible
+                    if (cur.author !== null) {
+                        e_user.append(avatar(cur.author.gravatar_id, avatarSize));
+                        e_user.append(author(cur.author.login));
+                    }
+                    else //otherwise just list the name
+                    {
+                        e_user.append(cur.commit.committer.name);
+                    }
+
+                    li.append(e_user);
+
+                    //add commit message
+                    li.append(message(cur.commit.message, cur.sha));
+                    li.append(when(cur.commit.committer.date));
+
+                    list.append(li);
+                }
+
+
+                callback(element);
+
+                function avatar(hash, size) {
+                    return $('<img>')
+                            .attr('class', 'github-avatar')
+                            .attr('src', 'https://www.gravatar.com/avatar/' + hash + '?s=' + size);
+                }
+
+                function author(login) {
+                    return  $('<a>')
+                            .attr("href", 'https://github.com/' + login)
+                            .text(login);
+                }
+
+                function message(commitMessage, sha) {
+                    var originalCommitMessage = commitMessage;
+                    if (limitMessage > 0 && commitMessage.length > limitMessage)
+                    {
+                        commitMessage = commitMessage.substr(0, limitMessage) + '...';
+                    }
+
+                    var link = $('<a class="github-commit"></a>')
+                      .attr("title", originalCommitMessage)
+                      .attr("href", 'https://github.com/' + user + '/' + repo + '/commit/' + sha)
+                      .text(commitMessage);
+
+                    return link;
+                }
+
+                function when(commitDate) {
+                    var commitTime = new Date(commitDate).getTime();
+                    var todayTime = new Date().getTime();
+
+                    var differenceInDays = Math.floor(((todayTime - commitTime)/(24*3600*1000)));
+                    if (differenceInDays === 0) {
+                        var differenceInHours = Math.floor(((todayTime - commitTime)/(3600*1000)));
+                        if (differenceInHours === 0) {
+                            var differenceInMinutes = Math.floor(((todayTime - commitTime)/(600*1000)));
+                            if (differenceInMinutes === 0) {
+
+                                return 'just now';
+                            }
+
+                            return 'about ' + differenceInMinutes + ' minutes ago';
+                        }
+
+                        return 'about ' + differenceInHours + ' hours ago';
+                    } else if (differenceInDays == 1) {
+                        return 'yesterday';
+                    }
+                    return differenceInDays + ' days ago';
+                }
+            });
+        }
+
+        return {
+            run: function () {
+                _widgetRun(this);
+            }
+        };
+
+    })();
+
+    $.fn.githubInfoWidget = function(options, callback) {
+        this.each(function () {
+            new widget($(this), options, callback)
+                .run();
+        });
+        return this;
+    };
+
+})(jQuery);
