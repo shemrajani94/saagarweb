@@ -64,6 +64,8 @@ var wkey = 87;
 var akey = 65;
 var dkey = 68;
 var dots = new Array();  
+var rainbow = new Array('red',"orange",'yellow','green','blue','indigo','violet','silver','gold'); 
+var RBiterator = 0; 
 var turtle;
 
     
@@ -141,8 +143,10 @@ function toRad(x) {
 function eachInterval() {
   
      if (dots.length > 150) {
+         if (RBiterator > rainbow.length -1) {RBiterator = 0;}
         console.log("erasing " + " dots length = " + dots.length);
-        trailDot(dots[0],dots[1],dots[2],'blue');
+        trailDot(dots[0],dots[1],dots[2],rainbow[RBiterator]);
+         RBiterator++;
         dots.shift();
         dots.shift();
         dots.shift();
