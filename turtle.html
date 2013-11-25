@@ -183,19 +183,19 @@ function eachInterval() {
   }
   if(rightTurn==true){
     var curAngle = triangle.getAngle();
-    if  (curAngle > 360) {curAngle = 360-curAngle;} 
+    if  (curAngle > 360) {curAngle = 359-curAngle;} 
     newAngle = curAngle+turnSpeed;
     if(newAngle<0){
-      newAngle=newAngle+360;
+      newAngle=newAngle+359;
     }
     triangle.set({angle: newAngle});
   }
   if(leftTurn==true){
     var curAngle = triangle.getAngle();
-    if  (curAngle > 360) {curAngle = 360-curAngle;}   
+    if  (curAngle > 360) {curAngle = 359-curAngle;}   
     newAngle = curAngle-turnSpeed;
     if(newAngle<0){
-      newAngle=newAngle+360;
+      newAngle=newAngle+359;
     }
     triangle.set({angle: newAngle});
   }
