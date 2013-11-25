@@ -63,13 +63,12 @@ var leftkey = 37;
 var wkey = 87;
 var akey = 65;
 var dkey = 68;
+var dots = new Array();  
 var turtle;
 
     
-    
-
 refreshCanvas();
-somecanvas();
+
     
 function refreshCanvas(){
   canvas = new fabric.Canvas('canvas');
@@ -91,11 +90,7 @@ function refreshCanvas(){
 });
 };
 
-function somecanvas(){    
-canvas = new fabric.Canvas('canvas');
-}    
 
-    
 $(document).ready(function(){
       $(document).keydown(function() {
           if(event.which == upkey || event.which==wkey){
@@ -125,12 +120,12 @@ $(document).ready(function(){
 });    
 
 
-function trailDot(x,y,r){
+function trailDot(x,y,r,c){
   var circle = new fabric.Circle({
     left: x,
     top: y,
     radius: r,
-    fill: 'green'
+    fill: c
   });
   canvas.add(circle);
   canvas.bringToFront(turtle);
@@ -143,6 +138,15 @@ function toRad(x) {
 }
    
 function eachInterval() {
+  
+     if (dots.length > 150) {
+        console.log("erasing " + " dots length = " + dots.length);
+        trailDot(dots[0],dots[1],dots[2],'blue');
+        dots.shift();
+        dots.shift();
+        dots.shift();
+    }
+  
     moveSpeed = $('#amount').val(); 
     turnSpeed = moveSpeed /2
     if (turnSpeed<2) {turnSpeed =2;}
@@ -163,7 +167,14 @@ function eachInterval() {
     if(Y<0){Y=h;}
     if(Y>h){Y=0;}
     triangle.set({top: Y, left:X});
-    trailDot(X,Y,R);
+    trailDot(X,Y,R, 'green');
+    
+    console.log("adding");
+    dots.push(X);
+    dots.push(Y);
+    dots.push(R+1);
+    
+    
   }
   if(rightTurn==true){
     var curAngle = triangle.getAngle();
