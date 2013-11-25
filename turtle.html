@@ -191,7 +191,8 @@ function eachInterval() {
     triangle.set({angle: newAngle});
   }
   if(leftTurn==true){
-    var curAngle = triangle.getAngle()%359;
+    var curAngle = triangle.getAngle();
+    if  (curAngle > 360) {curAngle = 360-curAngle;}   
     newAngle = curAngle-turnSpeed;
     if(newAngle<0){
       newAngle=newAngle+360;
