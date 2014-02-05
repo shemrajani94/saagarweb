@@ -6,6 +6,6 @@
 //    console.log(x);
 //});
 
-$.getJSON('http://finance.yahoo.com/d/quotes.jsonp?s=AAPL&f=a',function(x){
+$.getJSON('https://finance.yahoo.com/d/quotes.jsonp?s=AAPL&f=a',function(x){
     console.log(x);
 });
