@@ -6,8 +6,7 @@
 //    console.log(x);
 //});
 
-$.get({
-    url:'http://ws.nasdaqdod.com/v1/NASDAQQuotes.asmx/GetQuotes',
+$.get('http://ws.nasdaqdod.com/v1/NASDAQQuotes.asmx/GetQuotes',{
     Symbols:'AAPL',
     StartDateTime:'6/20/2011 00:00:00.000',
     EndDateTime:'6/21/2011 00:00:00.000'
